@@ -20,8 +20,22 @@ bgR1 = fundo.get_rect(center = ((largura/2,(altura/2))))
 nave = pygame.image.load(os.path.join('assets' ,'img','ship.png')).convert_alpha()
 nave = pygame.transform.scale(nave,(40,40))
 
-naveRec = nave.get_rect(center = (500,500))
+def update_laser(laser_list,speed = 300):
+    for laserRec in laser_list:
+        if laserRec.midbottom[1] <0 :
+            laser_list.remove(laserRec)
 
+def display_score(tela,font):
+    score_text = str(f'S T A R - GAME {pygame.time.get_ticks()//100}' )
+    texto = font.render(score_text, True, (255,255,255))
+    recText = texto.get_rect(midleft =(30,15))
+    tela.blit(texto,recText)
+
+naveRec = nave.get_rect(center = (500,500))
+lasersurf = pygame.image.load(os.path.join('assets','img','laser.png')).convert_alpha()
+lasersurf = pygame.transform.scale(lasersurf,(4,40))
+#laserRec = lasersurf.get_rect(midbottom = naveRec.midtop)
+laser_list = []
 pygame.display.set_caption('<- A COBRINHA AKI Q FOFA')
 loop = True
 r,g,b = 0,0,0
@@ -31,13 +45,17 @@ mov_esquerda = False
 mov_direita = False
 mov_cima = False
 mov_baixo = False
-
 while(loop):
-    relogio.tick(120)
+    dt = relogio.tick(120)/1000
 
     for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONUP:
-            print(f'Tiro em {event.pos}')
+        #if event.type == pygame.MOUSEBUTTONUP:
+         #   print(f'Tiro em {event.pos}')
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            laserRec = lasersurf.get_rect(midbottom = naveRec.midtop)
+            laser_list.append(laserRec)
+                
 
         if event.type == pygame.QUIT:
             loop = False
@@ -75,10 +93,15 @@ while(loop):
     start = int(round(time.time()*1000))
     tela.blit(fundo, (0,0))
     tela.blit(nave, naveRec)
+    update_laser(laser_list)
+    for laserRec in laser_list:
+        tela.blit(lasersurf,laserRec)
+        laserRec.y -= round(100*dt*10)
+    #tela.blit(lasersurf,laserRec)
     tela.blit(texto,bgR1)
 
     
-    naveRec.y -= 10
+    #naveRec.y -= 10
 
     if naveRec.y <= 0:
         naveRec.y = altura - 20
