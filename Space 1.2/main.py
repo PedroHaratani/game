@@ -30,7 +30,7 @@ def display_score(tela,font):
     texto = font.render(score_text, True, (255,255,255))
     recText = texto.get_rect(midleft =(30,15))
     tela.blit(texto,recText)
-
+display_score(display = tela,font=font)
 naveRec = nave.get_rect(center = (500,500))
 lasersurf = pygame.image.load(os.path.join('assets','img','laser.png')).convert_alpha()
 lasersurf = pygame.transform.scale(lasersurf,(4,40))
