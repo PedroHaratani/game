@@ -21,6 +21,6 @@ while True:
             sys.exit()
 
     dt = FPS.tick(60) /1000.0
-    display_surface.blit(bg1,(0,0))
+    #display_surface.blit(bg1,(0,0))
     #group_sprite.update(dt,laser_)
     pygame.display.update()
